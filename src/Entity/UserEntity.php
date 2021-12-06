@@ -48,5 +48,15 @@ class User {
     
     public function setPassword(string $password){
         $this->password = $password;
+    }    
+
+    public function getAdmin(){
+        return $this->admin;
+    }    
+
+    public function setAdmin(string $admin){
+        $this->admin = $admin;
     }
+
+   
 }

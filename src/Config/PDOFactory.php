@@ -1,5 +1,6 @@
 <?php
 
+namespace PDOFactory;
 class PDOFactory
 {
     public static function getConnection()
