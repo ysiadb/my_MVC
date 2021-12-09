@@ -6,16 +6,13 @@ use App\Entity\Author;
 use App\Fram\Factories\PDOFactory;
 use App\Fram\Utils\Flash;
 use App\Manager\AuthorManager;
-use App\Model\authorManager as ModelAuthorManager;
 
 class SecurityController extends BaseController
 {
 
     public function executeIndex()
     {
-
-
-        $authors = new ModelAuthorManager(PDOFactory::getMysqlConnection());
+        $authors = new AuthorManager(PDOFactory::getMysqlConnection());
 
         $this->render(
             'login.php',
@@ -25,11 +22,19 @@ class SecurityController extends BaseController
 
     }
 
-    public function login($login, $mdp)
+    public function executeLogin($login, $mdp)
     {
-        $authors = new ModelAuthorManager(PDOFactory::getMysqlConnection());
+        $authors = new AuthorManager(PDOFactory::getMysqlConnection());
+        $this->render(
+            'login.php',
+            [],
+            'Login page'
+        );
 
-        $_SESSION["isAuthor"] = ModelAuthorManager::userExist($login, $mdp);
-        $_SESSION["isAdmin"] = ModelAuthorManager::isAdmin($login, $mdp);
+        $_SESSION["isAuthor"] = AuthorManager::userExist($login, $mdp);
+        $_SESSION["isAdmin"] = AuthorManager::isAdmin($login, $mdp);
+        var_dump($_SESSION["isAuthor"], "IS AUTHOR"); 
     }
+
+    
 }

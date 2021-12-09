@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\Manager;
 
-class authorManager extends BaseManager
+use App\Entity\Author;
+
+class AuthorManager extends BaseManager
 {
     public function getAllAuthors()
     {
@@ -53,7 +55,7 @@ class authorManager extends BaseManager
         return $result->execute();
     }
 
-    public function isAdmin($login, $mdp)
+    public static function isAdmin($login, $mdp)
     {
         $req = "SELECT * from `user` WHERE pseudo=:login and password=:mdp and admin=1";
         $result = $this->bdd->prepare($req);
@@ -68,7 +70,7 @@ class authorManager extends BaseManager
         }
     }
 
-    public function userExist($login, $mdp)
+    public static function userExist($login, $mdp)
     {
         $req = "SELECT * from `user` WHERE pseudo=:login and password=:mdp";
         $result = $this->bdd->prepare($req);
