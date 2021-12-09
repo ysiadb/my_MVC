@@ -20,7 +20,7 @@ class SecurityController extends BaseController
         $this->render(
             'login.php',
             [],
-            'Home page'
+            'Login page'
         );
 
     }
