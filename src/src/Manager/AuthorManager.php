@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Author;
+use PDO;
 
 class AuthorManager extends BaseManager
 {
@@ -55,13 +56,15 @@ class AuthorManager extends BaseManager
         return $result->execute();
     }
 
-    public static function isAdmin($login, $mdp)
+    public function isAdmin($login, $mdp)
     {
         $req = "SELECT * from `user` WHERE pseudo=:login and password=:mdp and admin=1";
         $result = $this->bdd->prepare($req);
-        $result->bindValue(':login', $login->getPseudo(), PDO::PARAM_STR);
-        $result->bindValue(':password', $mdp->getPassword(), PDO::PARAM_STR);
+        $result->bindValue(':login', $login, PDO::PARAM_STR);
+        $result->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $result->execute();
+
+        var_dump($result); 
 
         if ($result->rowCount() > 1) {
             return true;
@@ -70,13 +73,16 @@ class AuthorManager extends BaseManager
         }
     }
 
-    public static function userExist($login, $mdp)
+    public function userExist($login, $mdp)
     {
         $req = "SELECT * from `user` WHERE pseudo=:login and password=:mdp";
         $result = $this->bdd->prepare($req);
-        $result->bindValue(':login', $login->getPseudo(), PDO::PARAM_STR);
-        $result->bindValue(':admin', $mdp->getAdmin(), PDO::PARAM_INT);
+        $result->bindValue(':login', $login, PDO::PARAM_STR);
+        $result->bindValue(':mdp', $mdp, PDO::PARAM_INT);
         $result->execute();
+
+        var_dump($result);
+        die;   
 
         if ($result->rowCount() > 1) {
             return true;

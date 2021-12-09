@@ -22,19 +22,21 @@ class SecurityController extends BaseController
 
     }
 
-    public function executeLogin($login, $mdp)
+    public function executeLogin()
     {
         $authors = new AuthorManager(PDOFactory::getMysqlConnection());
+        
+        $_SESSION["isAuthor"] = $authors->userExist($_POST["pseudo"], $_POST["password"]);
+        $_SESSION["isAdmin"] = $authors->isAdmin($_POST["pseudo"], $_POST["password"]);
+        var_dump($_SESSION["isAuthor"], "IS AUTHOR"); 
+        var_dump($_SESSION["isAdmin"], "IS ADMIN"); 
+        
         $this->render(
             'login.php',
             [],
             'Login page'
         );
-
-        $_SESSION["isAuthor"] = AuthorManager::userExist($login, $mdp);
-        $_SESSION["isAdmin"] = AuthorManager::isAdmin($login, $mdp);
-        var_dump($_SESSION["isAuthor"], "IS AUTHOR"); 
+        
     }
 
-    
 }

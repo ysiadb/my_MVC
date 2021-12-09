@@ -1,4 +1,4 @@
-<form method="post" action="/" name="login-form">
+<form method="post" action="#" name="login-form">
     <div>
         <label>pseudo</label>
         <input type="pseudo" name="pseudo" required />
