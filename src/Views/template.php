@@ -23,13 +23,19 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
             </ul>
 
 
             <div class="text-end">
+                <?php if ($_SESSION["isAuthor"]== FALSE) : ?>
                 <a href="/login"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
                 <a href="/register"><button type="button" class="btn btn-warning">Sign-up</button></a>
+                <?php else: ?>
+                    <a href="/logout"><button type="button" class="btn btn-outline-light me-2">Log out</button></a>
+                    <a href="/dashboard"><button type="button" class="btn btn-outline-light me-2">Mettre en ligne un post</button></a>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>
@@ -48,7 +54,14 @@
 <?php endif; ?>
 
 <div class="container">
-    <?= $content; ?>
+    <?php
+    if($_SESSION["isAuthor"] == 1):
+        if($_SESSION["isAdmin"] == 1):
+            echo "Admin + ";
+        endif;
+    echo "Tu es l'utilisateur numéro " .$_SESSION["perId"] ;
+    endif ;?>
+    <?= $content?>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

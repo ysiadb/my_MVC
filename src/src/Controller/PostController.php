@@ -2,19 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Author;
+use App\Manager\AuthorManager;
+use App\Manager\PostManager;
+use App\Entity\Post;
 use App\Fram\Factories\PDOFactory;
 use App\Fram\Utils\Flash;
-use App\Manager\PostManager;
+
 
 class PostController extends BaseController
 {
     /**
      * Show all Posts
      */
-    public function executeIndex()
+    public function getIndex()
     {
-        $postManager = new PostManager(PDOFactory::getMysqlConnection());
+        /** @var PostManager $postManager */
+        $postManager = PostManager::getInstance();
         $content = $postManager->getAllPosts();
 
         $this->render(
@@ -27,7 +30,7 @@ class PostController extends BaseController
 
     }
 
-    public function executeShow()
+    public function getShow()
     {
         Flash::setFlash('alert', 'je suis une alerte');
 
@@ -39,13 +42,87 @@ class PostController extends BaseController
             'Show Page'
         );
     }
+    public function getDelete()
+    {
 
-    public function executeAuthor()
+        /** @var PostManager $postManager */
+        $postManager = PostManager::getInstance();
+        $idPost = $this->params['id'];
+
+        $postManager->deletePost($idPost);
+
+        header('Location:/');
+    }
+
+    public function getUpdate()
+    {
+
+        $this->render(
+            'update.php',
+            [],
+            'Update page'
+        );
+    }
+
+    public function postUpdate()
+    {
+
+        /** @var PostManager $postManager */
+        $postManager = PostManager::getInstance();
+
+        $idPost = $this->params['id'];
+        $titre = $_POST["titre"] ?? NULL;
+        $texte = $_POST["texte"] ?? NULL;
+        $date =  date('Y-m-d H:i:s');
+        $idAuth = $_SESSION["perId"] ?? NULL;
+
+        $postManager->updatePost($titre, $texte, $date, $idAuth, $idPost);
+
+        header('Location:/');
+    }
+
+    public function getAuthor()
     {
         $this->render(
             'author.php',
             [],
             'Auteur'
         );
+    }
+
+    public function getDashboard(){
+
+
+        $this->render(
+            'dashboard.php',
+            [],
+            'Dashboard'
+        );
+
+    }
+
+    public function postDashboard()
+    {
+        /** @var PostManager $postManager */
+        $posts = PostManager::getInstance();
+
+        $titre = $_POST["titre"] ?? NULL;
+        $texte = $_POST["texte"] ?? NULL;
+        $idAuth = $_SESSION["perId"] ?? NULL;
+        $date =  date('Y-m-d H:i:s');
+
+        
+        //ADD FILE 
+        $image = basename($_FILES["uploadedFile"]["name"]);
+        $source = fopen($_FILES["uploadedFile"]["tmp_name"], 'r');
+        $dest = fopen(dirname(__DIR__, 2) . '/upload/' . $image, 'wb');
+        stream_copy_to_stream($source, $dest);
+        fclose($source);
+        fclose($dest);
+
+        $newpath = dirname(__DIR__, 2) . '/upload/' . $image; 
+
+        $posts->addPost($titre, $texte, $newpath, $date, $idAuth);
+        header('Location:/');
     }
 }

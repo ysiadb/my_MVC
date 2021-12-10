@@ -2,42 +2,62 @@
 
 namespace App\Entity;
 
-class Author
+class Author extends Entity
 {
     private string $firstName;
     private string $lastName;
     private string $pseudo;
+    private string $email;
     private string $password;
     private int $admin;
     private int $id;
 
-    public function __construct($firstName, $lastName, $pseudo, $password, $admin)
+
+
+    /*
+    public function __construct($id,$firstName, $lastName, $pseudo, $email, $password, $admin)
     {
+        $this->setId($id);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setPseudo($pseudo);
+        $this->setEmail($email);
         $this->setPassword($password);
         $this->setAdmin($admin);
+    }*/
+
+
+
+    public function setId(int $id)
+    {
+        $this->id = $id;
     }
-
-
 
     public function getFirstName()
     {
         return $this->firstName;
     }
 
-    public function setFirstName($firstName): void
+    public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+    }
     public function getLastName()
     {
         return $this->lastName;
     }
 
-    public function setLastName($lastName): void
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
     }
@@ -47,7 +67,7 @@ class Author
         return $this->pseudo;
     }
 
-    public function setPseudo($pseudo): void
+    public function setPseudo($pseudo)
     {
         $this->pseudo = $pseudo;
     }
@@ -57,7 +77,7 @@ class Author
         return $this->password;
     }
 
-    public function setPassword($password): void
+    public function setPassword($password)
     {
         $this->password = $password;
     }
@@ -67,7 +87,7 @@ class Author
         return $this->admin;
     }
 
-    public function setAdmin($admin): void
+    public function setAdmin($admin)
     {
         $this->admin = $admin;
     }

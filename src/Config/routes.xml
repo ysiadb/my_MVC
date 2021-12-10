@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <routes>
+    <!--POST CONTROLLER-->
     <route path="/" action="index" controller="PostController"/>
     <route path="show" action="show" controller="PostController" params="id"/>
     <route path="author" action="author" controller="PostController"/>
-    <route path="login" action="login" controller="SecurityController" params="login,pw"/>
-    <route path="register" action="index" controller="SecurityController" params="login,pw"/>
+    <route path="dashboard" action="dashboard" controller="PostController"/>
+    <route path="delete" action="delete" controller="PostController" params="id"/>
+    <route path="update" action="update" controller="PostController" params="id"/>
+
+    <!--SECURITY CONTROLLER-->
+    <route path="login" action="login" controller="SecurityController"/>
+    <route path="logout" action="logout" controller="SecurityController"/>
+    <route path="register" action="register" controller="SecurityController"/>
+
 </routes>

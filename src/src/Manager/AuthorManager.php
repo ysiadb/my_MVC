@@ -7,6 +7,7 @@ use PDO;
 
 class AuthorManager extends BaseManager
 {
+
     public function getAllAuthors()
     {
         $req = "SELECT * FROM user";
@@ -16,36 +17,41 @@ class AuthorManager extends BaseManager
 
     public function getAuthorById(int $id)
     {
-        $req = "SELECT * FROM user where id=:id";
+        $req = "SELECT * FROM user where id = :id";
         $result = $this->bdd->prepare($req);
+        $result->bindValue(':id', $id, \PDO::PARAM_INT);
+        $result->execute();
+
+        return $this->hydrate($result->fetch(\PDO::FETCH_ASSOC));
+    }
+
+    public function updateAuthor($firstname, $lastname, $pseudo, $admin,$email, $password, $id)
+    {
+        $req = "UPDATE `user` SET `firstname`=':firstname',`lastname`=':lastname',`pseudo`=':pseudo', `email`=:'email', `admin`=:admin,`password`=':password' WHERE id=:id";
+        $result = $this->bdd->prepare($req);
+        $result->bindValue(':firstname', $firstname, PDO::PARAM_STR);
+        $result->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+        $result->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+        $result->bindValue(':admin', $admin, PDO::PARAM_INT);
+        $result->bindValue(':password', $password, PDO::PARAM_STR);
+        $result->bindValue(':email', $email, PDO::PARAM_STR);
         $result->bindValue(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 
-    public function updateAuthor(Author $author)
+    public function addAuthor($firstname, $lastname, $pseudo,$email, $admin, $password)
     {
-        $req = "UPDATE `user` SET `firstname`=':firstname',`lastname`=':lastname',`pseudo`=':pseudo',`admin`=:admin,`password`=':password' WHERE id=:id";
+        $req = "INSERT INTO `user`(`firstname`, `lastname`, `pseudo`, `admin`, `password` ,`email`) VALUES (:firstname,:lastname,:pseudo,:admin,:password,:email)";
         $result = $this->bdd->prepare($req);
-        $result->bindValue(':firstname', $author->getFirstName(), PDO::PARAM_STR);
-        $result->bindValue(':lastname', $author->getLastName(), PDO::PARAM_STR);
-        $result->bindValue(':pseudo', $author->getPseudo(), PDO::PARAM_STR);
-        $result->bindValue(':admin', $author->getAdmin(), PDO::PARAM_INT);
-        $result->bindValue(':password', $author->getPassword(), PDO::PARAM_STR);
-        $result->bindValue(':id', $author->getId(), PDO::PARAM_INT);
-        return $result->execute();
-    }
-
-    public function addAuthor(Author $author)
-    {
-        $req = "INSERT INTO `user`(`firstname`, `lastname`, `pseudo`, `admin`, `password`) VALUES (:firstname,:lastname,:pseudo,:admin,:password)";
-        $result = $this->bdd->prepare($req);
-        $result->bindValue(':firstname', $author->getFirstName(), PDO::PARAM_STR);
-        $result->bindValue(':lastname', $author->getLastName(), PDO::PARAM_STR);
-        $result->bindValue(':pseudo', $author->getPseudo(), PDO::PARAM_STR);
-        $result->bindValue(':admin', $author->getAdmin(), PDO::PARAM_INT);
-        $result->bindValue(':password', $author->getPassword(), PDO::PARAM_STR);
-        $result->bindValue(':id', $author->getId(), PDO::PARAM_INT);
-        return $result->execute();
+        $result->bindValue(':firstname', $firstname, PDO::PARAM_STR);
+        $result->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+        $result->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+        $result->bindValue(':admin', $admin, PDO::PARAM_INT);
+        $result->bindValue(':password', $password, PDO::PARAM_STR);
+        $result->bindValue(':email', $email, PDO::PARAM_STR);
+        $result->execute();
+        $_SESSION["perId"] = $this->bdd->lastInsertId();
+        return $result;
     }
 
     public function deleteAuthor(int $id)
@@ -64,9 +70,7 @@ class AuthorManager extends BaseManager
         $result->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $result->execute();
 
-        var_dump($result); 
-
-        if ($result->rowCount() > 1) {
+        if ($result->rowCount() > 0) {
             return true;
         } else {
             return false;
@@ -75,20 +79,28 @@ class AuthorManager extends BaseManager
 
     public function userExist($login, $mdp)
     {
-        $req = "SELECT * from `user` WHERE pseudo=:login and password=:mdp";
+        $req = "SELECT id from `user` WHERE pseudo=:login and password=:mdp LIMIT 1";
         $result = $this->bdd->prepare($req);
         $result->bindValue(':login', $login, PDO::PARAM_STR);
         $result->bindValue(':mdp', $mdp, PDO::PARAM_INT);
         $result->execute();
 
-        var_dump($result);
-        die;   
+        while ($author = $result->fetch(PDO::FETCH_OBJ)) {
+            $num = $author->id;
+        }
 
-        if ($result->rowCount() > 1) {
+        $_SESSION["perId"] = $num;
+
+        if ($result->rowCount() > 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    function hydrate($args)
+    {
+        return new Author($args);
     }
 }
 
