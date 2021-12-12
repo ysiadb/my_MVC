@@ -11,8 +11,8 @@ CREATE TABLE `user` (
 
 CREATE TABLE `post` (
 `id` INT(30) NOT NULL AUTO_INCREMENT ,
-`titre` VARCHAR(30) NOT NULL ,
-`texte` VARCHAR(30) NOT NULL ,
+`titre` VARCHAR(70) NOT NULL ,
+`texte` VARCHAR(270) NOT NULL ,
 `image` VARCHAR(130) NOT NULL ,
 `date` DATETIME NOT NULL ,
 `idauthor` INT(30) NOT NULL , PRIMARY KEY (`id`), FOREIGN KEY (idauthor) REFERENCES user(id)
@@ -20,7 +20,7 @@ CREATE TABLE `post` (
 
 CREATE TABLE `comment` (
 `id` INT(30) NOT NULL AUTO_INCREMENT ,
-`texte` VARCHAR(30) NOT NULL ,
+`texte` VARCHAR(270) NOT NULL ,
 `idauthor` INT(30) NOT NULL ,
 `idpost` INT(30) NOT NULL ,
 `date` DATETIME ,

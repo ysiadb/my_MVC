@@ -1,8 +1,27 @@
 <?php
-namespace App\Model;
+namespace App\Manager;
+use App\Entity\Comment; 
+use App\Entity\Post; 
 
-class commentManager extends BaseManager
+
+class CommentManager extends BaseManager
 {
+
+     /** @var CommentManager */
+     protected $commentManager;
+     
+    /** @var AuthorManager */
+    protected $authorManager;
+
+     /** For dependency injection next step */
+     public function __construct()
+     {
+         $this->authorManager = CommentManager::getInstance();
+         parent::__construct();
+     }
+ 
+
+     
     public function getAllComments()
     {
         $req = "SELECT * FROM comment";
@@ -17,12 +36,15 @@ class commentManager extends BaseManager
         return $result->execute();
     }
 
-    public function updateComment(Comment $comment)
+    public function updateComment($id, $texte, $idAuthor, $idPost, $date)
     {
-        $req = "UPDATE `comment` SET `texte`=:text WHERE id=:id";
+        $req = "UPDATE `comment` SET `texte`=:texte, `idauthor`=:idauthor, `idpost`=:idpost, `date`=:date WHERE id=:id";
         $result = $this->bdd->prepare($req);
-        $result->bindValue(':text', $comment->getTexte(), PDO::PARAM_STR);
-        $result->bindValue(':id', $comment->getId(), PDO::PARAM_INT);
+        $result->bindValue(':id', $id, PDO::PARAM_INT);
+        $result->bindValue(':texte', $texte, PDO::PARAM_STR);
+        $result->bindValue(':idauthor', $idAuthor, PDO::PARAM_INT);
+        $result->bindValue(':idpost', $idPost, PDO::PARAM_INT);
+        $result->bindValue(':date', $date, PDO::PARAM_STR);
         return $result->execute();
     }
 
@@ -42,12 +64,20 @@ class commentManager extends BaseManager
         return $result->execute();
     }
 
-    public function addComment(\Comment $comment)
+    public function addComment($texte, $idAuthor, $idPost, $date)
     {
         $req="INSERT INTO `post`(`texte`) VALUES (:texte)";
         $result = $this->bdd->prepare($req);
-        $result->bindValue(':texte', $comment->getTexte(), PDO::PARAM_STR);
+        $result->bindValue(':texte', $texte, PDO::PARAM_STR);
+        $result->bindValue(':idauthor', $idAuthor, PDO::PARAM_INT);
+        $result->bindValue(':idpost', $idPost, PDO::PARAM_INT);
+        $result->bindValue(':date', $date, PDO::PARAM_STR);
         return $result->execute();
-    }
 
+    function hydrate($args)
+    {
+        $p = new Post($args);
+        $p->setAuthor($this->authorManager->getAuthorById($args['idauthor']));
+        return $p;
+    }
 }

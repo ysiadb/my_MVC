@@ -11,10 +11,12 @@ class Post extends Entity{
     private int $id;
     private string $titre;
     private string $texte;
-    private string $image;
     private string $date;
     private int $idAuthor;
     private Author $author;
+    private string $image;
+
+
 
     /*
     public function __construct($id, $titre, $texte, $idAuthor)
@@ -27,6 +29,16 @@ class Post extends Entity{
     }
     */
 
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image)
+    {
+        $this->image = $image;
+    }
 
     public function setId($id){
         $this->id = $id;
@@ -69,15 +81,6 @@ class Post extends Entity{
     public function setTexte(string $texte){
         $this->texte = $texte;
     }
-
-    public function getImage(){
-        return $this->image;
-    }
-
-    public function setImage(string $image){
-        $this->image = $image;
-    }
-
     public function getDate(){
         return $this->date;
     }

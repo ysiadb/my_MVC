@@ -56,10 +56,14 @@ class PostController extends BaseController
 
     public function getUpdate()
     {
+        /** @var PostManager $postManager */
+        $postManager = PostManager::getInstance();
+        $idPost = $this->params['id'];
+        $content = $postManager->getPostById($idPost);
 
         $this->render(
             'update.php',
-            [],
+            ['post' => $content],
             'Update page'
         );
     }
@@ -76,7 +80,16 @@ class PostController extends BaseController
         $date =  date('Y-m-d H:i:s');
         $idAuth = $_SESSION["perId"] ?? NULL;
 
-        $postManager->updatePost($titre, $texte, $date, $idAuth, $idPost);
+        $image = basename($_FILES["uploadedFile"]["name"]);
+        $source = fopen($_FILES["uploadedFile"]["tmp_name"], 'r');
+        $dest = fopen(dirname(__DIR__, 2) . '/upload/' . $image, 'wb');
+        stream_copy_to_stream($source, $dest);
+        fclose($source);
+        fclose($dest);
+
+        $newpath = '/upload/' . $image;
+
+        $postManager->updatePost($titre, $texte, $newpath, $date, $idAuth, $idPost);
 
         header('Location:/');
     }
@@ -90,18 +103,18 @@ class PostController extends BaseController
         );
     }
 
-    public function getDashboard(){
+    public function getNewpost(){
 
 
         $this->render(
-            'dashboard.php',
+            'newpost.php',
             [],
-            'Dashboard'
+            'Newpost'
         );
 
     }
 
-    public function postDashboard()
+    public function postNewpost()
     {
         /** @var PostManager $postManager */
         $posts = PostManager::getInstance();
@@ -111,8 +124,6 @@ class PostController extends BaseController
         $idAuth = $_SESSION["perId"] ?? NULL;
         $date =  date('Y-m-d H:i:s');
 
-        
-        //ADD FILE 
         $image = basename($_FILES["uploadedFile"]["name"]);
         $source = fopen($_FILES["uploadedFile"]["tmp_name"], 'r');
         $dest = fopen(dirname(__DIR__, 2) . '/upload/' . $image, 'wb');
@@ -120,9 +131,9 @@ class PostController extends BaseController
         fclose($source);
         fclose($dest);
 
-        $newpath = dirname(__DIR__, 2) . '/upload/' . $image; 
+        $newpath = '/upload/' . $image;
 
-        $posts->addPost($titre, $texte, $newpath, $date, $idAuth);
+        $posts->addPost($titre, $texte,$newpath, $date, $idAuth);
         header('Location:/');
     }
 }

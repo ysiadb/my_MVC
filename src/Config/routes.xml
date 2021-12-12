@@ -5,7 +5,7 @@
     <route path="/" action="index" controller="PostController"/>
     <route path="show" action="show" controller="PostController" params="id"/>
     <route path="author" action="author" controller="PostController"/>
-    <route path="dashboard" action="dashboard" controller="PostController"/>
+    <route path="newpost" action="newpost" controller="PostController"/>
     <route path="delete" action="delete" controller="PostController" params="id"/>
     <route path="update" action="update" controller="PostController" params="id"/>
 
