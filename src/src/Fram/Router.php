@@ -27,11 +27,7 @@ class Router
                 }
                 return new $controllerClass($action, $params,$_SERVER['REQUEST_METHOD'] );
             }
-
         }
-
         return new ErrorController('error404');
-
-
     }
 }

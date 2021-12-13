@@ -9,20 +9,14 @@ use App\Manager\AuthorManager;
 
 class AdminController extends BaseController
 {
-
     public function getIndex()
     {
-
         $this->render(
             'home.php',
             [
-                'posts' => $posts,
-                'user' => new Author(),
-                'test' => 'je suis un test'
             ],
             'Home page'
         );
-
     }
 
 

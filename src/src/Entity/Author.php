@@ -12,22 +12,11 @@ class Author extends Entity
     private int $admin;
     private int $id;
 
-
-
-    /*
-    public function __construct($id,$firstName, $lastName, $pseudo, $email, $password, $admin)
+    public function getId()
     {
-        $this->setId($id);
-        $this->setFirstName($firstName);
-        $this->setLastName($lastName);
-        $this->setPseudo($pseudo);
-        $this->setEmail($email);
-        $this->setPassword($password);
-        $this->setAdmin($admin);
-    }*/
-
-
-
+        return $this->id;
+    }
+    
     public function setId(int $id)
     {
         $this->id = $id;
@@ -91,10 +80,4 @@ class Author extends Entity
     {
         $this->admin = $admin;
     }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
 }

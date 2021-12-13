@@ -11,7 +11,6 @@ abstract class BaseController
     public function __construct(string $action, array $params = [], string $method = 'get')
     {
         $this->params = $params;
-
         $method = strtolower($method) . ucfirst($action);
         if (is_callable([$this, $method])) {
             $this->$method();
@@ -21,17 +20,13 @@ abstract class BaseController
     public function render(string $template, array $arguments, string $title)
     {
         $view = $this->viewsDir . $template;
-
         foreach ($arguments as $key => $value) {
             ${$key} = $value;
         }
-
-
         ob_start();
         require $view;
         $content = ob_get_clean();
         require $this->templateFile;
         exit;
-
     }
 }   

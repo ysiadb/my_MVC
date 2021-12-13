@@ -5,7 +5,6 @@
 * @var $post \App\Entity\Post[]
 */
 
-
 foreach($post as $item){
     echo $item->getTitre(); 
 

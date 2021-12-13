@@ -2,11 +2,10 @@
 namespace App\Manager;
 use App\Entity\Comment; 
 use App\Entity\Post; 
-
+use PDO; 
 
 class CommentManager extends BaseManager
 {
-
      /** @var CommentManager */
      protected $commentManager;
      
@@ -14,14 +13,19 @@ class CommentManager extends BaseManager
     protected $authorManager;
 
      /** For dependency injection next step */
-     public function __construct()
-     {
-         $this->authorManager = CommentManager::getInstance();
-         parent::__construct();
-     }
- 
+    public function __construct()
+    {
+        $this->authorManager = CommentManager::getInstance();
+        parent::__construct();
+    }
 
-     
+    function hydrate($args)
+    {
+        $p = new Post($args);
+        $p->setAuthor($this->authorManager->getAuthorById($args['idauthor']));
+        return $p;
+    }
+ 
     public function getAllComments()
     {
         $req = "SELECT * FROM comment";
@@ -73,11 +77,5 @@ class CommentManager extends BaseManager
         $result->bindValue(':idpost', $idPost, PDO::PARAM_INT);
         $result->bindValue(':date', $date, PDO::PARAM_STR);
         return $result->execute();
-
-    function hydrate($args)
-    {
-        $p = new Post($args);
-        $p->setAuthor($this->authorManager->getAuthorById($args['idauthor']));
-        return $p;
     }
 }

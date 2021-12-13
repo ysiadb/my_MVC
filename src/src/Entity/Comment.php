@@ -19,8 +19,6 @@ class Comment extends Entity
         $this->setIdAuthor($idAuthor);
         $this->setIdPost($idPost);
         $this->setDate(date('Y-m-d H:i:s'));
-
-
     }
 
     public function getId(): int

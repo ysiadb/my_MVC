@@ -16,20 +16,6 @@ class Post extends Entity{
     private Author $author;
     private string $image;
 
-
-
-    /*
-    public function __construct($id, $titre, $texte, $idAuthor)
-    {
-        $this->setId($id);
-        $this->setTitre($titre);
-        $this->setTexte($texte);
-        $this->setDate();
-        $this->setIdAuthor($idAuthor);
-    }
-    */
-
-
     public function getImage()
     {
         return $this->image;
@@ -40,15 +26,14 @@ class Post extends Entity{
         $this->image = $image;
     }
 
-    public function setId($id){
-        $this->id = $id;
-        return $this;
-    }
-
     public function getId(){
         return $this->id;
     }
 
+    public function setId($id){
+        $this->id = $id;
+        return $this;
+    }
 
     public function getIdAuthor(){
         return $this->idAuthor;
@@ -58,13 +43,13 @@ class Post extends Entity{
         $this->idAuthor = $idAuthor;
     }
 
+    public function getAuthor(){
+        return $this->author;
+    }
+
     public function setAuthor(Author $author){
         $this->author = $author;
         return $this;
-    }
-
-    public function getAuthor(){
-        return $this->author;
     }
 
     public function getTitre(){
@@ -88,6 +73,4 @@ class Post extends Entity{
     public function setDate($date){
         $this->date = $date;
     }
-
-
 }

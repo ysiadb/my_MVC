@@ -8,7 +8,6 @@ use App\Entity\Post;
 use App\Fram\Factories\PDOFactory;
 use App\Fram\Utils\Flash;
 
-
 class PostController extends BaseController
 {
     /**
@@ -70,7 +69,6 @@ class PostController extends BaseController
 
     public function postUpdate()
     {
-
         /** @var PostManager $postManager */
         $postManager = PostManager::getInstance();
 
@@ -80,6 +78,7 @@ class PostController extends BaseController
         $date =  date('Y-m-d H:i:s');
         $idAuth = $_SESSION["perId"] ?? NULL;
 
+        //Upload images
         $image = basename($_FILES["uploadedFile"]["name"]);
         $source = fopen($_FILES["uploadedFile"]["tmp_name"], 'r');
         $dest = fopen(dirname(__DIR__, 2) . '/upload/' . $image, 'wb');
@@ -124,6 +123,7 @@ class PostController extends BaseController
         $idAuth = $_SESSION["perId"] ?? NULL;
         $date =  date('Y-m-d H:i:s');
 
+        //Upload images
         $image = basename($_FILES["uploadedFile"]["name"]);
         $source = fopen($_FILES["uploadedFile"]["tmp_name"], 'r');
         $dest = fopen(dirname(__DIR__, 2) . '/upload/' . $image, 'wb');

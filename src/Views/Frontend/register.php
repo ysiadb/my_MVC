@@ -1,10 +1,10 @@
 <form method="post" action="" name="signup-form">
     <div class="form-element">
-        <label>Firstname</label>
+        <label>Prénom</label>
         <input type="text" name="firstname" required />
     </div>
     <div class="form-element">
-        <label>Lastname</label>
+        <label>Nom</label>
         <input type="text" name="lastname" required />
     </div>
     <div>
@@ -16,7 +16,7 @@
         <input type="text" name="pseudo" required />
     </div>
     <div class="form-element">
-        <label>Password</label>
+        <label>Mot de passe</label>
         <input type="password" name="pw" required />
     </div>
     <div class="form-element">

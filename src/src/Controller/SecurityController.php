@@ -7,10 +7,8 @@ use App\Fram\Factories\PDOFactory;
 use App\Fram\Utils\Flash;
 use App\Manager\AuthorManager;
 use App\Manager\PostManager;
-
 class SecurityController extends BaseController
 {
-
     public function getRegister()
     {
         $this->render(
@@ -18,7 +16,6 @@ class SecurityController extends BaseController
             [],
             'Register page'
         );
-
     }
 
     public function postRegister()
@@ -53,28 +50,22 @@ class SecurityController extends BaseController
             [],
             'Login page'
         );
-
     }
 
     public function postLogin()
     {
-
         /** @var AuthorManager $authorManager */
         $authors = AuthorManager::getInstance();
-
         $_SESSION["isAuthor"] = $authors->userExist($_POST["pseudo"], $_POST["password"]);
         $_SESSION["isAdmin"] = $authors->isAdmin($_POST["pseudo"], $_POST["password"]);
-
         header('Location:/');
         exit;
     }
 
     public function getLogout()
     {
-
         unset($_SESSION['isAuthor']);
         unset($_SESSION['isAdmin']);
-
         header('Location:/');
         exit;
     }

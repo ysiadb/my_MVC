@@ -7,7 +7,11 @@ use PDO;
 
 class AuthorManager extends BaseManager
 {
-
+    function hydrate($args)
+    {
+        return new Author($args);
+    }
+    
     public function getAllAuthors()
     {
         $req = "SELECT * FROM user";
@@ -96,11 +100,6 @@ class AuthorManager extends BaseManager
         } else {
             return false;
         }
-    }
-
-    function hydrate($args)
-    {
-        return new Author($args);
     }
 }
 

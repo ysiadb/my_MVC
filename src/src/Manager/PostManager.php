@@ -6,7 +6,6 @@ use PDO;
 
 class PostManager extends BaseManager
 {
-
     /** @var AuthorManager */
     protected $authorManager;
 
@@ -17,8 +16,13 @@ class PostManager extends BaseManager
         parent::__construct();
     }
 
-
-
+    function hydrate($args)
+    {
+        $p = new Post($args);
+        $p->setAuthor($this->authorManager->getAuthorById($args['idauthor']));
+        return $p;
+    }
+    
     public function getAllPosts()
     {
         $req = "SELECT * FROM post";
@@ -41,7 +45,7 @@ class PostManager extends BaseManager
         return $result->fetchAll(\PDO::FETCH_FUNC,function ($id,$titre,$texte,$image,$date, $idauthor){
             return $this->hydrate(compact(['id','titre','texte','image','date','idauthor']));
         });
-        
+
     }
 
     public function updatePost($titre, $texte, $image, $date, $idauthor, $id)
@@ -75,13 +79,6 @@ class PostManager extends BaseManager
         $result = $this->bdd->prepare($req);
         $result->bindValue(':id', $id, PDO::PARAM_INT);
         return $result->execute();
-    }
-
-    function hydrate($args)
-    {
-        $p = new Post($args);
-        $p->setAuthor($this->authorManager->getAuthorById($args['idauthor']));
-        return $p;
     }
 }
 
